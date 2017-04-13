@@ -1,12 +1,13 @@
 require 'byebug'
 class ShortenedUrl < ApplicationRecord
-# debugger
 validate :nonpremium_max, :no_spamming
-
+DICTIONARY = ['cat', 'dog', 'sniff', 'ball', 'rock', 'stick', 'leash', 'pet', 'collar', 'walkies', 'setter', 'spaniel', 'corgi', 'poodle', 'puppy', 'pinchon', 'chihuahua']
   def self.random_code
-    short_url = SecureRandom.urlsafe_base64
+    short_url = ''
+    3.times {short_url << DICTIONARY.shuffle!.first }
     while ShortenedUrl.exists?(shortened_url: short_url)
-      short_url = SecureRandom.urlsafe_base64
+      short_url = ''
+      3.times {short_url << DICTIONARY.shuffle!.first }
     end
 
     short_url
@@ -23,7 +24,7 @@ validate :nonpremium_max, :no_spamming
     prunes = self.all.reject do |url|
       url.visits.where({ created_at: (n.minutes.ago)..(Time.now)}).length > 0
     end
-    
+
     prunes.each(&:destroy)
   end
 
@@ -38,7 +39,11 @@ validate :nonpremium_max, :no_spamming
 
   def self.shorten_my_url(me, url)
     raise "Not a user" unless me.class == User
-    ShortenedUrl.create(user_id: me.id, long_url: url, shortened_url: ShortenedUrl.random_code)
+    shortlink = ""
+    if me.premium
+      shortlink = "PREMIUMFRESHESTDOG-#{me.id}-"
+    end
+    ShortenedUrl.create(user_id: me.id, long_url: url, shortened_url: shortlink + ShortenedUrl.random_code)
   end
 
   def num_clicks
