@@ -14,4 +14,13 @@ class User < ApplicationRecord
   has_many :visited_urls,
     through: :visits,
     source: :sites
+
+  has_many :taggings,
+    primary_key: :id,
+    foreign_key: :user_id,
+    class_name: :Tagging
+
+  has_many :tag_topics,
+    through: :taggings,
+    source: :tag_topic
 end

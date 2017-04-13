@@ -30,4 +30,24 @@ ActiveRecord::Base.transaction do
   v4 = Visit.record_visit!(ffd5, shurly1)
   v5 = Visit.record_visit!(ffd5, shurly1)
   v6 = Visit.record_visit!(ffd6, shurly7)
+
+  TagTopic.destroy_all
+  t1 = TagTopic.create(tag: "bark")
+  t2 = TagTopic.create(tag: "berk")
+  t3 = TagTopic.create(tag: "bork")
+  t4 = TagTopic.create(tag: "woof")
+  t5 = TagTopic.create(tag: "sniffsniff")
+  t6 = TagTopic.create(tag: "sniff")
+  t7 = TagTopic.create(tag: "hollow")
+  t8 = TagTopic.create(tag: "Trump did nothing wrong!")
+
+  Tagging.destroy_all
+  tg1 = Tagging.create(user_id: ffd1.id, tag_id: t8.id, shortened_id: shurly1.id)
+  tg2 = Tagging.create(user_id: ffd2.id, tag_id: t1.id, shortened_id: shurly3.id)
+  tg3 = Tagging.create(user_id: ffd5.id, tag_id: t5.id, shortened_id: shurly1.id)
+  tg4 = Tagging.create(user_id: ffd5.id, tag_id: t5.id, shortened_id: shurly1.id)
+  tg5 = Tagging.create(user_id: ffd5.id, tag_id: t5.id, shortened_id: shurly2.id)
+  tg6 = Tagging.create(user_id: ffd5.id, tag_id: t5.id, shortened_id: shurly3.id)
+  tg7 = Tagging.create(user_id: ffd5.id, tag_id: t5.id, shortened_id: shurly5.id)
+  tg8 = Tagging.create(user_id: ffd5.id, tag_id: t5.id, shortened_id: shurly2.id)
 end
